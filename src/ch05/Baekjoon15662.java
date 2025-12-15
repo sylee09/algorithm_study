@@ -1,51 +1,37 @@
 package ch05;
 
-import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Baekjoon15662 {
-    static LinkedList<LinkedList<Integer>> gears = new LinkedList<>();
+    static int T;
 
     public static void main(String[] args) {
+        // 입력 받기
         Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
+        T = sc.nextInt();
         sc.nextLine();
+        boolean[][] gears = new boolean[T][8];
 
-        for (int i = 0; i < t; i++) {
+        for (int num = 0; num < T; num++) {
             String line = sc.nextLine();
-            gears.add(new LinkedList<>());
-
-            for (int j = 0; j < 8; j++) {
-                gears.get(i).add(Integer.valueOf(String.valueOf(line.charAt(j))));
+            for (int i = 0; i < 8; i++) {
+                int n = Integer.parseInt(String.valueOf(line.charAt(i)));
+                // N극0, S극 1
+                gears[num][i] = n == 1;
             }
         }
+        int K = sc.nextInt();
 
-        int k = sc.nextInt();
-
-        for (int i = 0; i < k; i++) {
-            int gear = sc.nextInt() - 1;
-            int dirInt = sc.nextInt();
-            boolean dir;
-            if (dirInt == 1) {
-                dir = true;
-            } else {
-                dir = false;
-            }
-            rotateGearLeft(gear, dir);
-            if (dir) {
-                int first = gears.get(gear).poll();
-                gears.get(gear).offer(first);
-            } else {
-                int last = gears.get(gear).pollLast();
-                gears.get(gear).offerFirst(last);
-            }
-            rotateGearRight(gear, dir);
+        // 회전
+        for (int i = 0; i < K; i++) {
+            int num = sc.nextInt();
+            int dir = sc.nextInt();
+            rotate(gears, num - 1, dir);
         }
 
         int ans = 0;
-        for (LinkedList<Integer> gear : gears) {
-            Integer first = gear.get(0);
-            if (first == 1) {
+        for (int i = 0; i < T; i++) {
+            if (gears[i][0]) {
                 ans++;
             }
         }
@@ -53,45 +39,101 @@ public class Baekjoon15662 {
         System.out.println(ans);
     }
 
-    static void rotateGearLeft(int gear, boolean dir) {
-        int leftGear = gear - 1;
-
-        int lMagnetic = gears.get(gear).get(6);
-
-        if (leftGear >= 0) {
-            int leftGearRMagnetic = gears.get(leftGear).get(2);
-            if (leftGearRMagnetic != lMagnetic) {
-                rotateGearLeft(leftGear, !dir);
+    static void rotate(boolean[][] gears, int num, int dir) {
+        // 왼쪽 톱니바퀴 이동
+        if (num - 1 >= 0 && gears[num][6] != gears[num - 1][2]) {
+            if (dir == 1) {
+                rotateLeft(gears, num - 1, -1);
+            } else {
+                rotateLeft(gears, num - 1, 1);
+            }
+        }
+        // 오른쪽 톱니바퀴 이동
+        if (num + 1 < T && gears[num][2] != gears[num + 1][6]) {
+            if (dir == 1) {
+                rotateRight(gears, num + 1, -1);
+            } else {
+                rotateRight(gears, num + 1, 1);
             }
         }
 
-        if (dir) {
-            int last = gears.get(gear).pollLast();
-            gears.get(gear).offerFirst(last);
-        } else {
-            int first = gears.get(gear).poll();
-            gears.get(gear).offer(first);
+        // 현재 톱니바퀴 이동
+        if (dir == 1) {
+            boolean cur = gears[num][0];
+            gears[num][0] = gears[num][7];
+
+            for (int i = 1; i <= 7; i++) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
+        }else {
+            boolean cur = gears[num][7];
+            gears[num][7] = gears[num][0];
+
+            for (int i = 6; i >= 0; i--) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
         }
     }
 
-    static void rotateGearRight(int gear, boolean dir) {
-        int rightGear = gear + 1;
-
-        int rMagnetic = gears.get(gear).get(2);
-
-        if (rightGear < gears.size()) {
-            int rightGearLMagnetic = gears.get(rightGear).get(6);
-            if (rightGearLMagnetic != rMagnetic) {
-                rotateGearRight(rightGear, !dir);
+    private static void rotateLeft(boolean[][] gears, int num, int dir) {
+        if (num - 1 >= 0 && gears[num][6] != gears[num - 1][2]) {
+            if (dir == 1) {
+                rotateLeft(gears, num - 1, -1);
+            } else {
+                rotateLeft(gears, num - 1, 1);
             }
         }
+        if (dir == 1) {
+            boolean cur = gears[num][0];
+            gears[num][0] = gears[num][7];
 
-        if (dir) {
-            int last = gears.get(gear).pollLast();
-            gears.get(gear).offerFirst(last);
-        } else {
-            int first = gears.get(gear).poll();
-            gears.get(gear).offer(first);
+            for (int i = 1; i <= 7; i++) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
+        }else {
+            boolean cur = gears[num][7];
+            gears[num][7] = gears[num][0];
+
+            for (int i = 6; i >= 0; i--) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
+        }
+    }
+
+    private static void rotateRight(boolean[][] gears, int num, int dir) {
+        if (num + 1 < T && gears[num][2] != gears[num + 1][6]) {
+            if (dir == 1) {
+                rotateRight(gears, num + 1, -1);
+            } else {
+                rotateRight(gears, num + 1, 1);
+            }
+        }
+        if (dir == 1) {
+            boolean cur = gears[num][0];
+            gears[num][0] = gears[num][7];
+
+            for (int i = 1; i <= 7; i++) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
+        }else {
+            boolean cur = gears[num][7];
+            gears[num][7] = gears[num][0];
+
+            for (int i = 6; i >= 0; i--) {
+                boolean next = gears[num][i];
+                gears[num][i] = cur;
+                cur = next;
+            }
         }
     }
 }
