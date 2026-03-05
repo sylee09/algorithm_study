@@ -5,44 +5,28 @@ import java.util.*;
 class P1 {
     public char[] solution(int n, int[][] ladder) {
         char[] answer = new char[n];
-        // 사다리 생성
-        boolean[][] createdLadder = new boolean[ladder.length + 1][n + 1];
 
-        int level = 0;
+        for (int i = 0; i < n; i++) {
+            answer[i] = (char) ('A' + i);
+        }
+
+        // 배열 원소 교환
         for (int[] l : ladder) {
             for (int element : l) {
-                createdLadder[level][element] = true;
+                swap(answer, element - 1);
             }
-            level++;
         }
 
-//        for (int i = 0; i < createdLadder.length; i++) {
-//            for (int j = 0; j < createdLadder[0].length; j++) {
-//                System.out.print(createdLadder[i][j]+" ");
-//            }
-//            System.out.println();
-//        }
-
-        // 사다리 타기
-        for (int i = 1; i <= n; i++) {
-            level = 0;
-            int cur = i;
-            while (level < createdLadder.length) {
-//                System.out.println("cur: " + level + ", " + cur);
-                // 현재 위치가 true인 경우 오른쪽으로 이동
-                if (createdLadder[level][cur]) {
-                    cur++;
-                }
-                // 현재 위치 왼쪽이 true인 경우 왼쪽으로 이동
-                else if (createdLadder[level][cur - 1]) {
-                    cur--;
-                }
-                level++;
-            }
-            int ans = 'A' + i - 1;
-            answer[cur - 1] = (char) ans;
-        }
         return answer;
+    }
+
+    static void swap(char[] answer, int element) {
+        char left = answer[element];
+        char right = answer[element + 1];
+        char temp = left;
+
+        answer[element] = right;
+        answer[element+1]=temp;
     }
 
     public static void main(String[] args) {
