@@ -5,28 +5,26 @@ import java.util.*;
 class P1 {
     public char[] solution(int n, int[][] ladder) {
         char[] answer = new char[n];
-
         for (int i = 0; i < n; i++) {
-            answer[i] = (char) ('A' + i);
+            answer[i] = (char) (i + 'A');
         }
 
-        // 배열 원소 교환
         for (int[] l : ladder) {
             for (int element : l) {
-                swap(answer, element - 1);
+                int idx = element - 1;
+                swap(answer, idx);
             }
         }
 
         return answer;
     }
 
-    static void swap(char[] answer, int element) {
-        char left = answer[element];
-        char right = answer[element + 1];
-        char temp = left;
+    public void swap(char[] answer, int idx) {
+        char origin = answer[idx];
+        char target = answer[idx + 1];
 
-        answer[element] = right;
-        answer[element+1]=temp;
+        answer[idx] = target;
+        answer[idx + 1] = origin;
     }
 
     public static void main(String[] args) {
