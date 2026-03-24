@@ -1,32 +1,32 @@
 package source3;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 public class P2 {
-    static int[] dx = new int[]{0, 1, 0, -1};
-    static int[] dy = new int[]{1, 0, -1, 0};
+    static int[] dx = new int[]{-1, 0, 1, 0};
+    static int[] dy = new int[]{0, 1, 0, -1};
 
     public int[] solution(int[][] board, int k){
-        int time = 0;
-        int dir = 0;
-        int curx = 0;
-        int cury = 0;
+        int cnt = 0;
+        ArrayDeque<int[]> deque = new ArrayDeque<>();
+        deque.offer(new int[]{0, 0});
+        int dir = 1;
 
-        while (time < k) {
-            int nx = curx + dx[dir];
-            int ny = cury + dy[dir];
-            time++;
+        while (cnt < k) {
+            int[] cur = deque.poll();
+            int nx = cur[0] + dx[dir];
+            int ny = cur[1] + dy[dir];
 
-            if (nx < 0 || nx >= board.length || ny < 0 || ny >= board[0].length || board[nx][ny] == 1) {
+            if (nx >= 0 && nx < board.length && ny >= 0 && ny < board[0].length && board[nx][ny] == 0) {
+                deque.offer(new int[]{nx, ny});
+            } else {
+                deque.offer(cur);
                 dir = (dir + 1) % 4;
-                continue;
             }
-
-            curx = nx;
-            cury = ny;
+            cnt++;
         }
-
-        return new int[]{curx, cury};
+        return deque.poll();
     }
 
     public static void main(String[] args){
