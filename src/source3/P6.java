@@ -3,72 +3,63 @@ package source3;
 import java.util.*;
 
 class P6 {
-    public int solution(int[][] fruit){
-        boolean[] check = new boolean[fruit.length];
-        for (int i = 0; i < fruit.length; i++) {
-            if (checkFunc(i, check)) {
-                continue;
-            }
-            int smallestIndex = findSmallest(fruit[i]);
-            if (duplicated(fruit[i], smallestIndex)) {
-                continue;
-            }
 
-            for (int j = i + 1; j < fruit.length; j++) {
-                if (checkFunc(j, check)) {
-                    continue;
-                }
-                int smallestIndex2 = findSmallest(fruit[j]);
-                if (duplicated(fruit[j], smallestIndex2)) {
-                    continue;
-                }
+    public int getMin(int[] f) {
+        int min = 100;
+        for (int x : f) {
+            min = Math.min(min, x);
+        }
+        return min;
+    }
 
-                if (smallestIndex != smallestIndex2 && fruit[i][smallestIndex] + 1 <= fruit[i][smallestIndex2] - 1 && fruit[j][smallestIndex2] + 1 <= fruit[j][smallestIndex] - 1) {
-                    check[i] = true;
-                    check[j] = true;
-                    fruit[i][smallestIndex] += 1;
-                    fruit[i][smallestIndex2] -= 1;
-                    fruit[j][smallestIndex] -= 1;
-                    fruit[j][smallestIndex2] += 1;
-                    break;
-                }
+    public boolean isMinUnique(int[] f) {
+        int cnt = 0;
+        int min = getMin(f);
+        for (int x : f) {
+            if(x==min) cnt++;
+        }
+        return cnt == 1;
+    }
+
+    public int getMinIndex(int[] f) {
+        int min = getMin(f);
+        for (int i = 0; i < 3; i++) {
+            if (f[i] == min) {
+                return i;
             }
         }
+        return 0;
+    }
 
+    public int solution(int[][] fruit) {
         int answer = 0;
-        for (int i = 0; i < fruit.length; i++) {
-            int idx = findSmallest(fruit[i]);
-            answer += fruit[i][idx];
+        int n = fruit.length;
+        int[] ch = new int[n];
+        for (int i = 0; i < n; i++) {
+            if(ch[i]==1) continue;
+            if(!isMinUnique(fruit[i])) continue;
+            for (int j = i + 1; j < n; j++) {
+                if(ch[j]==1) continue;
+                if(!isMinUnique(fruit[j])) continue;
+                int a = getMinIndex(fruit[i]);
+                int b = getMinIndex(fruit[j]);
+                if (a != b && fruit[i][b] > 0 && fruit[j][a] > 0) {
+                    if (fruit[i][a] + 1 <= fruit[i][b] - 1 && fruit[j][b] + 1 <= fruit[j][a] - 1) {
+                        fruit[i][a]++;
+                        fruit[i][b]--;
+                        fruit[j][b]++;
+                        fruit[j][a]--;
+                        ch[i] = 1;
+                        ch[j] = 1;
+                        break;
+                    }
+                }
+            }
         }
-
+        for (int[] x : fruit) {
+            answer += getMin(x);
+        }
         return answer;
-    }
-
-    public boolean checkFunc(int i, boolean[] check) {
-        return check[i];
-    }
-
-    public boolean duplicated(int[] fruit, int idx) {
-        for (int i = 0; i < 3; i++) {
-            if (i != idx && fruit[i] == fruit[idx]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int findSmallest(int[] fruit) {
-        int smallestIndex = 0;
-        int smallest = Integer.MAX_VALUE;
-
-        for (int i = 0; i < 3; i++) {
-            if (fruit[i] < smallest) {
-                smallest = fruit[i];
-                smallestIndex = i;
-            }
-        }
-
-        return smallestIndex;
     }
 
     public static void main(String[] args){
