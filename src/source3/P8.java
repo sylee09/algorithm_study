@@ -3,28 +3,34 @@ package source3;
 import java.util.*;
 class P8 {
     public int[] solution(int[] enter, int[] exit){
-        int n = enter.length;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < enter.length; i++) {
             enter[i]--;
             exit[i]--;
         }
-        int[] enterIdx = new int[n];
-        for (int i = 0; i < n; i++) {
+
+        // enterIdx[0]=0 => 0이 0번째
+        // enterIdx[1]=2 =? 1이 2번째
+        int[] enterIdx = new int[enter.length];
+
+        for (int i = 0; i < enter.length; i++) {
             enterIdx[enter[i]] = i;
         }
-        int[] enterT = new int[n];
-        int[] exitT = new int[n];
-        int cnt = 0;
-        for (int i = 0, j = 0; i < n; i++) {
-            while (j < n && j <= enterIdx[exit[i]]) {
-                enterT[enter[j]] = cnt++;
+
+        int[] enterT = new int[enter.length];
+        int[] exitT = new int[enter.length];
+        int time = 0;
+
+        for (int i = 0, j = 0; i < enter.length; i++) {
+            while (j < enter.length && j <= enterIdx[exit[i]]) {
+                enterT[enter[j]] = time++;
                 j++;
             }
-            exitT[exit[i]] = cnt++;
+            exitT[exit[i]] = time++;
         }
-        int[] answer = new int[n];
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
+
+        int[] answer = new int[enter.length];
+        for (int i = 0; i < enter.length; i++) {
+            for (int j = i + 1; j < enter.length; j++) {
                 if (!(exitT[i] < enterT[j] || exitT[j] < enterT[i])) {
                     answer[i]++;
                     answer[j]++;
