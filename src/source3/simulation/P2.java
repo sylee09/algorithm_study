@@ -1,4 +1,4 @@
-package source3;
+package source3.simulation;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;

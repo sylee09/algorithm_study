@@ -1,8 +1,7 @@
-package source3;
+package source3.simulation;
 
 import java.util.ArrayDeque;
 
-import java.util.*;
 class P3 {
     static int[] dx = new int[]{-1, 0, 1, 0};
     static int[] dy = new int[]{0, 1, 0, -1};

@@ -1,6 +1,4 @@
-package source3;
-
-import java.util.*;
+package source3.simulation;
 
 class P6 {
 
