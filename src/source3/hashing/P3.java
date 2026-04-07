@@ -29,7 +29,6 @@ public class P3 {
                 }
             }
         }
-
         return answer;
     }
 
