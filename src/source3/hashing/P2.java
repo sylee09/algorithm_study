@@ -24,7 +24,6 @@ public class P2 {
             int n = map.get((char) ('a' + i));
             answer[i] = max - n;
         }
-
         return answer;
     }
 
