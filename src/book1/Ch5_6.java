@@ -15,7 +15,6 @@ public class Ch5_6 {
             numPeopleInStages[num]++;
         }
 
-
         PriorityQueue<double[]> pq = new PriorityQueue<>((a,b)->{
             if (a[1] < b[1]) {
                 return 1;
