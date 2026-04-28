@@ -37,5 +37,6 @@ public class Ch6_5 {
         Ch6_5 solution = new Ch6_5();
         int[] answer = solution.solution(new int[]{5, 4, 3, 2, 1});
         System.out.println(Arrays.toString(answer));
+
     }
 }
