@@ -1,4 +1,4 @@
-package book1;
+package book1.ch6;
 
 import java.util.Arrays;
 import java.util.Stack;

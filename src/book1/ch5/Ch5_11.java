@@ -1,4 +1,4 @@
-package book1;
+package book1.ch5;
 
 import java.util.ArrayList;
 import java.util.Arrays;

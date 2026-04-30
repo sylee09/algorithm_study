@@ -1,4 +1,4 @@
-package book1;
+package book1.ch5;
 
 public class Ch5_5 {
     public int[][] solution(int[][] arr1, int[][] arr2) {
