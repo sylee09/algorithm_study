@@ -24,7 +24,6 @@ public class Ch11_5 {
         for (int neighbor = 0; neighbor < computers.length; neighbor++) {
             if (computers[cur][neighbor] == 1 && !check[neighbor]) {
                 dfs(check, computers, neighbor);
-                check[neighbor] = true;
             }
         }
     }
