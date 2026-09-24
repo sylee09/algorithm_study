@@ -1,57 +1,56 @@
 package source1.ch1;
 
-
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Ch1_3 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String line = sc.nextLine();
-        String[] split = line.split(" ");
-        int a = Integer.parseInt(split[0]);
-        int b = Integer.parseInt(split[1]);
-        int c = Integer.parseInt(split[2]);
+        int A = sc.nextInt();
+        int B = sc.nextInt();
+        int C = sc.nextInt();
+        sc.nextLine();
 
-        ArrayList<int[]> eventList = new ArrayList<>();
+        LinkedList<Integer> in = new LinkedList<>();
+        LinkedList<Integer> out = new LinkedList<>();
 
-        for (int i = 0; i < 3; i++) {
-            line = sc.nextLine();
-            split = line.split(" ");
-            eventList.add(new int[]{Integer.parseInt(split[0]), 1});
-            eventList.add(new int[]{Integer.parseInt(split[1]), -1});
+        for (int i = 1; i <= 3; i++) {
+            String line = sc.nextLine();
+            String[] split = line.split(" ");
+
+            in.offer(Integer.parseInt(split[0]));
+            out.offer(Integer.parseInt(split[1]));
         }
 
-        eventList.sort((x, y) -> {
-            if (x[0] < y[0]) {
-                return -1;
-            } else if (x[0] > y[0]) {
-                return 1;
-            } else if (x[1] < y[1]) {
-                return -1;
-            } else if (x[1] > y[1]) {
-                return 1;
-            }
-            return 0;
-        });
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 0);
+        map.put(1, A);
+        map.put(2, B);
+        map.put(3, C);
+
+        in.sort((a, b) -> a - b);
+        out.sort((a, b) -> a - b);
 
         int answer = 0;
-        int prev = eventList.get(0)[0];
-        int count = 0;
+        int curBuses = 0;
+        int lastTime = 0;
 
-        for (int[] element : eventList) {
-            int event = element[0];
-            if (count == 1) {
-                answer += (count * (event - prev)) * a;
-            } else if (count == 2) {
-                answer += (count * (event - prev)) * b;
-            } else if (count == 3) {
-                answer += (count * (event - prev)) * c;
+        for (int cur = 0; cur <= 100; cur++) {
+            if (in.isEmpty() && out.isEmpty()) {
+                break;
             }
-
-            prev = event;
-            count += element[1];
+            if ((!in.isEmpty() && cur == in.peek()) || (!out.isEmpty() && cur == out.peek())) {
+                answer += (curBuses * map.get(curBuses) * (cur - lastTime));
+                while (!in.isEmpty() && cur == in.peek()) {
+                    curBuses++;
+                    in.poll();
+                }
+                while (!out.isEmpty() && cur == out.peek()) {
+                    curBuses--;
+                    out.poll();
+                }
+                lastTime = cur;
+            }
         }
 
         System.out.println(answer);
