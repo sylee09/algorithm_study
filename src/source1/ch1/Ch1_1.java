@@ -16,28 +16,31 @@ public class Ch1_1 {
         }
 
         Arrays.sort(arr);
-//        System.out.println(Arrays.toString(arr));
 
-        helpFunc(arr, new ArrayList<Integer>(), 0);
+        func(new ArrayList<Integer>(), arr, 0);
     }
 
-    static void helpFunc(int[] arr, ArrayList<Integer> list, int idx) {
+    private static void func(ArrayList<Integer> list, int[] arr, int start) {
         if (found) {
             return;
         }
+
         if (list.size() == 7) {
-            int sum = list.stream().mapToInt(x -> x.intValue()).sum();
+            int sum = 0;
+            for (int element : list) {
+                sum += element;
+            }
             if (sum == 100) {
-                found = true;
-                for (int val : list) {
-                    System.out.println(val);
+                for (int element : list) {
+                    System.out.println(element);
                 }
+                found = true;
             }
             return;
         }
-        for (int i = idx; i < 9; i++) {
+        for (int i = start; i < arr.length; i++) {
             list.add(arr[i]);
-            helpFunc(arr, list, i + 1);
+            func(list, arr, i + 1);
             list.remove(list.size() - 1);
         }
     }
