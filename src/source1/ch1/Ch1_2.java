@@ -1,22 +1,28 @@
 package source1.ch1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Ch1_2 {
 
-    public static void main(String[] args) throws IOException {
-        int[] arr = new int[26];
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        String string = br.readLine();
-        for (char ch : string.toCharArray()) {
-            arr[ch - 'a']++;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (char x = 'a'; x <= 'z'; x++) {
+            map.put(x, 0);
         }
 
-        for (int element : arr) {
-            System.out.print(element + " ");
+        String line = sc.nextLine();
+
+        for (char ch : line.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
+
+        StringBuilder answer = new StringBuilder();
+
+        for (char x = 'a'; x <= 'z'; x++) {
+            answer.append(map.get(x) + " ");
+        }
+        System.out.println(answer);
     }
 }
