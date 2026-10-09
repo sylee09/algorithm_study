@@ -20,14 +20,14 @@ public class Baekjoon2828 {
             if (left <= x && x <= right) {
                 continue;
             }
-            if (Math.abs(left - x) < Math.abs(right - x)) {
-                right = right - Math.abs(left - x);
-                answer += Math.abs(left - x);
-                left = x;
-            } else {
-                left = left + Math.abs(right - x);
-                answer += Math.abs(right - x);
+            if (x > right) {
+                answer += (x - right);
+                left += (x - right);
                 right = x;
+            } else {
+                answer += (left - x);
+                right -= (left - x);
+                left = x;
             }
         }
 
